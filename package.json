@@ -1,5 +1,5 @@
 {
-  "name": "react-gladepay",
+  "name": "react-gladepay-2",
   "version": "1.0.0",
   "description": "This is an reactJS library for implementing gladepay payment gateway",
   "main": "dist/index.js",
