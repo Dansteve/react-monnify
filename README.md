@@ -34,7 +34,7 @@ yarn add react-gladepay-2
     	state = {
     		MID: "GP0000001", //Gladepay Merchant ID
     		email: "demo@gmail.com",  // customer email
-        amount: 10000 //equals NGN100,
+        amount: 10000, //equals NGN100,
         is_production: false //is_production,
     	}
 
