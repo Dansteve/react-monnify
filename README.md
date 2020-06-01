@@ -13,13 +13,13 @@ This React library provides a wrapper to add Gladepay Payments to your React app
 ### Install
 
 ```sh
-npm install react-gladepay --save
+npm install react-gladepay-2 --save
 ```
 
 or with `yarn`
 
 ```sh
-yarn add react-gladepay
+yarn add react-gladepay-2
 ```
 
 ### Usage

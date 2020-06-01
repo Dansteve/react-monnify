@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import {useGladepayPayment, GladepayButton, GladepayConsumer} from './dist/index.es';
+import {useGladepayPayment, GladepayButton, GladepayConsumer} from 'react-gladepay-2';
 import './App.css';
 
 const config = {
@@ -14,6 +14,7 @@ const config = {
   country: 'NG',
   currency: 'NGN',
   payment_method: ['card', 'bank', 'ussd', 'qr', 'mobilemoney'],
+  is_production:true,
   // logo: 'https://lh3.googleusercontent.com/-rOlOgqQu2gc/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmWs88G4Uz3QL1uB6jPJAgatI0muQ/photo.jpg?sz=46'
   logo: 'https://www.glade.ng/favicon-32x32.png',
 };
