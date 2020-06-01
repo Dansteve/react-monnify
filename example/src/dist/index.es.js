@@ -1,8 +1,15 @@
 import React, { useState, useEffect, createContext, forwardRef, useContext } from 'react';
 
 var cachedScripts = [];
-function useGladepayScript() {
-    var src = 'https://demo.api.gladepay.com/checkout.js';
+function useGladepayScript(is_production) {
+    if (is_production === void 0) { is_production = false; }
+    var src = '';
+    if (is_production) {
+        src = 'https://api.gladepay.com/checkout.js';
+    }
+    else {
+        src = 'https://demo.api.gladepay.com/checkout.js';
+    }
     var _a = useState({
         loaded: false,
         error: false,
@@ -57,8 +64,17 @@ var callGladepaySDK = function (gladepayArgs) {
 };
 
 function useGladepayPayment(options) {
-    var _a = useGladepayScript(), scriptLoaded = _a[0], scriptError = _a[1];
+    var _a = useGladepayScript(options.is_production), scriptLoaded = _a[0], scriptError = _a[1];
     var MID = options.MID, email = options.email, amount = options.amount, firstname = options.firstname, lastname = options.lastname, title = options.title, description = options.description, country = options.country, metadata = options.metadata, _b = options.currency, currency = _b === void 0 ? 'NGN' : _b, payment_method = options.payment_method, logo = options.logo, bearer = options.bearer, recurrent = options.recurrent, installment = options.installment, split = options.split;
+    function clean(obj) {
+        // tslint:disable-next-line:prefer-const
+        for (var propName in obj) {
+            if (obj[propName] === null || obj[propName] === undefined) {
+                delete obj[propName];
+            }
+        }
+        return obj;
+    }
     function initializePayment(callback, onclose) {
         if (scriptError) {
             throw new Error('Unable to load gladepay inline script');
@@ -87,15 +103,6 @@ function useGladepayPayment(options) {
             };
             callGladepaySDK(clean(gladepayArgs));
         }
-    }
-    function clean(obj) {
-        // tslint:disable-next-line:prefer-const
-        for (var propName in obj) {
-            if (obj[propName] === null || obj[propName] === undefined) {
-                delete obj[propName];
-            }
-        }
-        return obj;
     }
     useEffect(function () {
         if (scriptError) {

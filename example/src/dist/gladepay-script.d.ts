@@ -1,1 +1,1 @@
-export default function useGladepayScript(): boolean[];
+export default function useGladepayScript(is_production?: boolean): boolean[];
