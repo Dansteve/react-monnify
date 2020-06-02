@@ -4,7 +4,7 @@ This is a react library for implementing gladepay payment gateway
 
 ## Demo
 
-![Demo](React_App.png?raw=true "Demo Image")
+![Demo](React_App.png?raw=true 'Demo Image')
 
 ## Get Started
 
@@ -33,9 +33,9 @@ yarn add react-gladepay-2
 
     	state = {
     		MID: "GP0000001", //Gladepay Merchant ID
-    		email: "demo@gmail.com",  // customer email
-        amount: 10000, //equals NGN100,
-        is_production: false //is_production,
+    		email: "demo@gmail.com",// customer email
+    		amount: 10000, //equals NGN100,
+    		is_production: false //is_production,
     	}
 
     	callback = (response) => {
