@@ -1,15 +1,15 @@
 // @ts-ignore
 import {renderHook, cleanup} from '@testing-library/react-hooks';
-import useGladepayScript from '../gladepay-script';
+import useMonnifyScript from '../monnify-script';
 
-describe('useGladepayScript()', () => {
+describe('useMonnifyScript()', () => {
   afterAll(() => {
     cleanup();
     document.body.innerHTML = '';
   });
 
   it('adds the script to the dom', () => {
-    const {result} = renderHook(() => useGladepayScript());
+    const {result} = renderHook(() => useMonnifyScript());
 
     expect(result.current[0]).toBe(false);
     expect(result.current[1]).toBe(false);
@@ -17,14 +17,14 @@ describe('useGladepayScript()', () => {
   });
 
   it('Will not load multi inline script', () => {
-    renderHook(() => useGladepayScript());
-    const {result} = renderHook(() => useGladepayScript());
+    renderHook(() => useMonnifyScript());
+    const {result} = renderHook(() => useMonnifyScript());
 
     expect(result.current[0]).toBe(true);
     expect(result.current[1]).toBe(false);
     expect(document.getElementsByTagName('script').length).toBe(1);
     expect(document.body.innerHTML).toMatch(
-      new RegExp('https://demo.api.gladepay.com/checkout.js'),
+      new RegExp('https://demo.api.monnify.com/checkout.js'),
     );
   });
 });

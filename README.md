@@ -1,25 +1,25 @@
-# react-gladepay
+# react-monnify
 
-This is a react library for implementing gladepay payment gateway
+This is a react library for implementing monnify payment gateway
 
 ## Demo
 
-![Demo](React_App.png?raw=true 'Demo Image')
+![Demo](App.png?raw=true 'Demo Image')
 
 ## Get Started
 
-This React library provides a wrapper to add Gladepay Payments to your React application
+This React library provides a wrapper to add Monnify Payments to your React application
 
 ### Install
 
 ```sh
-npm install react-gladepay-2 --save
+npm install react-monnify --save
 ```
 
 or with `yarn`
 
 ```sh
-yarn add react-gladepay-2
+yarn add react-monnify
 ```
 
 ### Usage
@@ -27,39 +27,53 @@ yarn add react-gladepay-2
 ```javascript
     import React, { Component } from 'react';
     //import the library
-    import GladepayButton from 'react-gladepay';
+    import MonnifyButton from 'react-monnify';
 
     class App extends Component {
 
     	state = {
-    		MID: "GP0000001", //Gladepay Merchant ID
-    		email: "demo@gmail.com",// customer email
-    		amount: 10000, //equals NGN100,
-    		is_production: false //is_production,
+          amount: 5000,
+          currency: 'NGN',
+          reference: '' + Math.floor(Math.random() * 1000000000 + 1),
+          customerFullName: 'John Doe',
+          customerEmail: 'monnify@monnify.com',
+          customerMobileNumber: '08121281921',
+          apiKey: 'MK_TEST_SAF7HR5F3F',
+          contractCode: '4934121693',
+          paymentDescription: 'Test Pay',
+          isTestMode: true,
+          metadata: {
+            name: 'Damilare',
+            age: 45,
+          },
     	}
 
-    	callback = (response) => {
+    	onComplete = (response) => {
     		console.log(response); // card charged successfully, get reference here
     	}
 
-    	close = () => {
-    		console.log("Payment closed");
+    	close = (response) => {
+    		console.log(response);
     	}
 
       render() {
         return (
           <div>
             <p>
-              <GladepayButton
+              <MonnifyButton
                 text="Make Payment"
                 className="payButton"
-                callback={this.callback}
+                onComplete={this.onComplete}
                 close={this.close}
                 disabled={true} {/*disable payment button*/}
                 embed={true} {/*payment embed in your app instead of a pop up*/}
-                email={this.state.email}
+                customerFullName={this.state.customerFullName}
+                customerEmail={this.state.customerEmail}
+                customerMobileNumber={this.state.customerMobileNumber}
                 amount={this.state.amount}
-                MID={this.state.MID}
+                apiKey={this.state.apiKey}
+                contractCode={this.state.contractCode}
+                reference={this.state.reference}
                 tag="button"{/*it can be button or a or input tag */}
               />
             </p>
@@ -71,7 +85,7 @@ yarn add react-gladepay-2
     export default App;
 ```
 
-Please checkout [Gladepay Documentation](https://developer.glade.ng/docs/#gladepay-inline-checkout) for other available options you can add to the tag
+Please checkout [Monnify Documentation](https://docs.teamapt.com/display/MON/Monnify+Web+SDK) for other available options you can add to the tag
 
 ## Deployment
 

@@ -1,26 +1,32 @@
 import React from 'react';
 import logo from './logo.svg';
-import {useGladepayPayment, GladepayButton, GladepayConsumer} from 'react-gladepay-2';
+import {useMonnifyPayment, MonnifyButton, MonnifyConsumer} from './dist/index.es';
 import './App.css';
 
 const config = {
-  MID: 'GP0000001',
-  title: 'GladePay Test',
-  description: 'Experience GladePay Checkout',
-  firstname: 'Customer',
-  lastname: 'Customer',
-  email: 'danstevea@gmail.com',
-  amount: 1,
-  country: 'NG',
+  amount: 5000,
   currency: 'NGN',
-  payment_method: ['card', 'bank', 'ussd', 'qr', 'mobilemoney'],
-  is_production:true,
-  // logo: 'https://lh3.googleusercontent.com/-rOlOgqQu2gc/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmWs88G4Uz3QL1uB6jPJAgatI0muQ/photo.jpg?sz=46'
-  logo: 'https://www.glade.ng/favicon-32x32.png',
+  reference: '' + Math.floor(Math.random() * 1000000000 + 1),
+  customerFullName: 'John Doe',
+  customerEmail: 'monnify@monnify.com',
+  customerMobileNumber: '08121281921',
+  apiKey: 'MK_TEST_SAF7HR5F3F',
+  contractCode: '4934121693',
+  paymentDescription: 'Test Pay',
+  isTestMode: true,
+  metadata: {
+    name: 'Damilare',
+    age: 45,
+  },
 };
 
-const GladepayHookExample = () => {
-  const initializePayment = useGladepayPayment(config);
+const MonnifyHookExample = () => {
+  const componentProps = {
+    ...config,
+    onSuccess: response => console.log(response),
+    onClose: response => console.log(response),
+  };
+  const initializePayment = useMonnifyPayment(componentProps);
   return (
     <div>
       <button
@@ -28,7 +34,7 @@ const GladepayHookExample = () => {
           initializePayment();
         }}
       >
-        Gladepay Hooks Implementation
+        Monnify Hooks Implementation
       </button>
     </div>
   );
@@ -37,37 +43,37 @@ const GladepayHookExample = () => {
 function App() {
   const componentProps = {
     ...config,
-    text: 'Gladepay Button Implementation',
-    onSuccess: () => null,
-    onClose: () => null,
+    text: 'Monnify Button Implementation',
+    onSuccess: (response) => console.log(response),
+    onClose: (response) => console.log(response),
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={config.logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
         <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Implementation Gladepay React
+          Implementation Monnify React
         </a>
       </header>
       <div>
-        <GladepayHookExample className="btn" />
+        <MonnifyHookExample className="btn" />
       </div>
       <div>
-      <GladepayButton {...componentProps} className="btn" />
+        <MonnifyButton {...componentProps} className="btn" />
       </div>
       <div>
-      <GladepayConsumer {...componentProps} className="btn">
-        {({initializePayment}) => (
-          <button onClick={() => initializePayment()}>Gladepay Consumer Implementation</button>
-        )}
-      </GladepayConsumer>
-       </div>
+        <MonnifyConsumer {...componentProps} className="btn">
+          {({initializePayment}) => (
+            <button onClick={() => initializePayment()}>Monnify Consumer Implementation</button>
+          )}
+        </MonnifyConsumer>
+      </div>
     </div>
   );
 }

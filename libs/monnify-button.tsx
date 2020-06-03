@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react';
-import useGladepayPayment from './use-gladepay';
-import {GladepayProps} from './types';
+import useMonnifyPayment from './use-monnify';
+import {MonnifyProps} from './types';
 
-interface GladepayButtonProps extends GladepayProps {
+interface MonnifyButtonProps extends MonnifyProps {
   text?: string;
   className?: string;
   children?: ReactNode;
@@ -10,15 +10,15 @@ interface GladepayButtonProps extends GladepayProps {
   onClose?: Function;
 }
 
-const GladepayButton = ({
+const MonnifyButton = ({
   text,
   className,
   children,
   onSuccess,
   onClose,
   ...others
-}: GladepayButtonProps): JSX.Element => {
-  const initializePayment = useGladepayPayment(others);
+}: MonnifyButtonProps): JSX.Element => {
+  const initializePayment = useMonnifyPayment(others);
   return (
     <button className={className} onClick={(): void => initializePayment(onSuccess, onClose)}>
       {text || children}
@@ -26,4 +26,4 @@ const GladepayButton = ({
   );
 };
 
-export default GladepayButton;
+export default MonnifyButton;

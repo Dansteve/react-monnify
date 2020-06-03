@@ -2,12 +2,12 @@ import React from 'react';
 // @ts-ignore
 import {renderHook, cleanup, act} from '@testing-library/react-hooks';
 import {render, fireEvent} from '@testing-library/react';
-import {callGladepaySDK} from '../gladepay-actions';
-import useGladepayScript from '../gladepay-script';
-import GladepayConsumer from '../gladepay-consumer';
+import {callMonnifySDK} from '../monnify-actions';
+import useMonnifyScript from '../monnify-script';
+import MonnifyConsumer from '../monnify-consumer';
 import {config} from './fixtures';
 
-jest.mock('../gladepay-actions');
+jest.mock('../monnify-actions');
 
 const componentProps = {
   ...config,
@@ -16,11 +16,11 @@ const componentProps = {
   onClose: () => null,
 };
 
-describe('<GladepayProvider />', () => {
+describe('<MonnifyProvider />', () => {
   beforeEach(() => {
     // @ts-ignore
-    callGladepaySDK = jest.fn();
-    renderHook(() => useGladepayScript());
+    callMonnifySDK = jest.fn();
+    renderHook(() => useMonnifyScript());
   });
 
   afterAll(() => {
@@ -28,18 +28,18 @@ describe('<GladepayProvider />', () => {
     document.body.innerHTML = '';
   });
 
-  it('render GladepayProvider', () => {
+  it('render MonnifyProvider', () => {
     const tree = (
-      <GladepayConsumer {...componentProps}>
+      <MonnifyConsumer {...componentProps}>
         {({initializePayment}: Record<string, any>) => (
           <button onClick={() => initializePayment()}>Use render props 2000</button>
         )}
-      </GladepayConsumer>
+      </MonnifyConsumer>
     );
     const {getByText}: Record<string, any> = render(tree);
     // Click button
     fireEvent.click(getByText('Use render props 2000'));
     // @ts-ignore
-    expect(callGladepaySDK).toHaveBeenCalledTimes(1);
+    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,15 +1,15 @@
 import {createContext} from 'react';
 
-type IGladepayContext = {
+type IMonnifyContext = {
   initializePayment: Function;
   onSuccess: Function;
   onClose: Function;
 };
 
-const GladepayContext = createContext<IGladepayContext>({
+const MonnifyContext = createContext<IMonnifyContext>({
   initializePayment: () => null,
   onSuccess: () => null,
   onClose: () => null,
 });
 
-export default GladepayContext;
+export default MonnifyContext;

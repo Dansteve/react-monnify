@@ -1,7 +1,7 @@
 {
-  "name": "react-gladepay-2",
-  "version": "1.0.2",
-  "description": "This is an reactJS library for implementing gladepay payment gateway",
+  "name": "react-monnify",
+  "version": "0.0.1",
+  "description": "This is an reactJS library for implementing monnify payment gateway",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dansteve/react-gladepay.git"
+    "url": "git+https://github.com/dansteve/react-monnify.git"
   },
   "keywords": [
     "Javascript",
@@ -25,15 +25,20 @@
     "ReactJS",
     "Open Source",
     "payments",
-    "gladepay",
+    "monnify",
     "Gateway"
   ],
-  "author": "Dansteve Adekanbi <meetdansteve@gmail.com>",
+  "author": {
+    "email": "danstevea@gmail.com",
+    "name": "Dansteve Adekanbi",
+    "url": "https://github.com/dansteve",
+    "website": "https://meetdansteve.com/"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dansteve/react-gladepay/issues"
+    "url": "https://github.com/dansteve/react-monnify/issues"
   },
-  "homepage": "https://github.com/dansteve/react-gladepay#readme",
+  "homepage": "https://github.com/dansteve/react-monnify#readme",
   "peerDependencies": {
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0"

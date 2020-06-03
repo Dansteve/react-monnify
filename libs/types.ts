@@ -1,176 +1,90 @@
-type Currency = 'NGN' | 'GHS' | 'USD';
-
-type PaymentChannels = 'bank' | 'card' | 'qr' | 'ussd' | 'mobile_money';
-
-type Bearer = 'account' | 'subaccount';
-
-export interface GladepayProps {
+export interface MonnifyProps {
   /**
-   * development status
+   * development status | Should be set to true when using the sandbox and false when on production
+  */
+  isTestMode?: true | false;
+  /**
+   * Merchant's API Key (Can be found on the Monnify dashboard)
    */
-  is_production?: true | false;
+  apiKey: string;
   /**
-   * Merchant ID
+   * Merchant's contract code (Can be found on the Monnify dashboard)
    */
-  MID?: string;
+  contractCode: string;
   /**
-   * Amount to charge the customer
+   * The amount to be paid by the customer
    */
   amount: number;
   /**
-   * Transaction currency
-   * Default `NGN`
+   * The currency of the transaction being initialized. `NGN`
    */
-  currency?: Currency | string;
+  currency: string;
   /**
-   * Default `NG`
+   * Merchant's Unique reference for every transaction.
+   * (The SDK already has a code snippet that generates this for you, but you can always replace it)
    */
-  country?: string;
+  reference: string;
   /**
-   * The customer's email address
+   * Full name of the customer
    */
-  email: string;
+  customerFullName: string;
   /**
-   * The customer's First name
+   * Email address of the customer
    */
-  firstname?: string;
+  customerEmail: string;
   /**
-   * The customer's Last name
+   * Phone number of the customer.
    */
-  lastname?: string;
+  customerMobileNumber: string;
   /**
-   * Text to be displayed as the title of the payment modal.
+   * Description for the transaction. Will be used as the account name for bank transfer payments
    */
-  title?: string;
+  paymentDescription?: string;
   /**
-   * Text to be displayed as a short modal description.
+   * Transaction Hash added to transaction response for security purposes. 
+   *  Click here {@link https://docs.teamapt.com/display/MON/Calculating+the+Transaction+Hash Monnify}.
+   *  for information on how to calculate the hash value
    */
-  description?: string;
+  transactionHash?: {};
   /**
-   *
-   * When you need to pass extra data to the API.
-   *
+   * Status of the transaction ("PAID", "PENDING" or "FAILED")
    */
-  metadata?: string;
+  paymentStatus?: 'PAID' | 'PENDING' | 'FAILED' | string;
   /**
-   * You can select which payment method you want available on the checkout,
-   * pass array of the payment methods you want available
-   * e.g ['card', 'bank', 'ussd', 'qr', 'mobilemoney']
+   * Object containing specifications on how payments to this reserve account should be split.
    */
-  payment_method?: PaymentChannels | string[] | string;
+  incomeSplitConfig?: MonnifySplitOptions[];
   /**
-   * You can use this option to determide who pay for the charges
-   * on the transaction default is set to the merchants account.
-   * customer or account
-   */
-  bearer?: Bearer | string;
-  /**
-   * Link to the Logo image.
-   */
-  logo?: string;
-
-  /**
-   * Optional Paramter
-   *  The Inline Checkout can also be configured for advance requirements like Recurring payment, Split payment and Installment
-   */
-
-  /**
-   * Recurring Payment
-   * Recurring payment can be configured directly into the payment system that will be carried out automatically by the our
-   * system and send the results back to your Webhook as payment notification.
-   * To use the recurring feature within the inline checkout simply add these configuration options
-   * to the embeded inline checkout configurations.
-   *
-   * N.B: Recurring feature works only with card payments.
-   */
-  recurrent?: GladepayRecurrentOptions;
-
-  /**
-   * Installment Payment
-   * Installment payment allows you to collect payment in bit's to reach accumulate to a final amount.
-   */
-  installment?: GladepayInstallmentOptions;
-
-  /**
-   *
-   * Split Payment
-   * With split payments you can decide how you want the settlements to be handled when you provide a service to a third party.
-   * Before you can split payment you have generate a reference code on the dashboard that will be used to divide the payment
-   * into the account that was specified at the point of generating the code.
-   *
-   */
-  split?: GladepaySplitOptions[];
-
-  /**
-   *
    * Redirect URL
-   *
    */
-  redirect_post?: string;
+  redirectUrl?: string;
+  /**
+   * When you need to pass extra data to the API.
+   */
+  metadata?: object;
 
   'data-custom-button'?: string;
 }
 
-export interface GladepayRecurrentOptions {
+export interface MonnifySplitOptions {
   /**
-   * The frequency at which the recurring
-   * payment should occurs options available are
-   * daily or weekly or monthly
+   * The unique reference for the sub account that should receive the split.
    */
-  frequency: 'daily' | 'weekly' | 'monthly' | string;
+  subAccountCode: string;
   /**
-   * The value will determide when the charge should occur based on the frequency that has been set.
-   * Daily (Hours): 0 - 23
-   * Weekly (Day): 1 - 7
-   * Monthly (Day): 1 - 30
+   * Boolean to determine if the sub account should bear transaction fees or not
    */
-  value: string;
-}
-
-export interface GladepayInstallmentOptions {
+  feeBearer?: boolean;
   /**
-   *
-   * This option will be used to determide how the system will handle
-   * This option should be used for initial transaction.
-   *
-   * Dependant
-   * eg { `31-11-2017` : 20,`31-12-2017` : 30,`30-01-2017` : 50 }
-   *
+   * The percentage of the transaction fee to be borne by the sub account
    */
-  payment_schedule?: {};
+  feePercentage?: number;
   /**
-   *
-   * The total amount to be collect over a period of time.
-   * This option should be used for initial transaction.
-   *
+   * The percentage of the amount paid to be split into the sub account.
    */
-  total?: string;
+  splitPercentage?: string;
   /**
-   *
-   * The reference of the initial transaction that you
-   * want the user or customer to complete to the total amount.
-   *
+   * The percentage of the amount paid to be split into the sub account.
    */
-  txnRef?: string;
-}
-
-export interface GladepaySplitOptions {
-  /**
-   *
-   * Reference code that was generated at the point of setting up the split payment accounts.
-   *
-   */
-  ref_code: string;
-  /**
-   *
-   * The percentage of the transaction to be settled in the account.
-   *
-   */
-  percentage: string;
-  /**
-   *
-   * A fixed amount of the transaction to be settled in the account.
-   *
-   */
-  fixed: string;
+  splitAmount?: number;
 }

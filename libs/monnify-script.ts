@@ -6,12 +6,12 @@ interface IScriptResult {
   error: boolean;
 }
 
-export default function useGladepayScript(is_production = false): boolean[] {
+export default function useMonnifyScript(isTestMode = false): boolean[] {
   let src = '';
-  if (is_production) {
-    src = 'https://api.gladepay.com/checkout.js';
+  if (isTestMode) {
+    src = 'https://sandbox.sdk.monnify.com/plugin/monnify.js';
   } else {
-    src = 'https://demo.api.gladepay.com/checkout.js';
+    src = 'https://sandbox.sdk.monnify.com/plugin/monnify.js';
   }
 
   const [state, setState] = useState<IScriptResult>({

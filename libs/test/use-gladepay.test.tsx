@@ -2,18 +2,18 @@
 import {renderHook, cleanup, act} from '@testing-library/react-hooks';
 import {render, fireEvent} from '@testing-library/react';
 import React from 'react';
-import useGladepayPayment from '../use-gladepay';
-import {callGladepaySDK} from '../gladepay-actions';
-import useGladepayScript from '../gladepay-script';
+import useMonnifyPayment from '../use-monnify';
+import {callMonnifySDK} from '../monnify-actions';
+import useMonnifyScript from '../monnify-script';
 import {config} from './fixtures';
 
-jest.mock('../gladepay-actions');
+jest.mock('../monnify-actions');
 
-describe('useGladepayPayment()', () => {
+describe('useMonnifyPayment()', () => {
   beforeEach(() => {
     // @ts-ignore
-    callGladepaySDK = jest.fn();
-    renderHook(() => useGladepayScript());
+    callMonnifySDK = jest.fn();
+    renderHook(() => useMonnifyScript());
   });
 
   afterAll(() => {
@@ -21,8 +21,8 @@ describe('useGladepayPayment()', () => {
     document.body.innerHTML = '';
   });
 
-  it('should use useGladepayPayment', () => {
-    const {result, rerender} = renderHook(() => useGladepayPayment(config));
+  it('should use useMonnifyPayment', () => {
+    const {result, rerender} = renderHook(() => useMonnifyPayment(config));
     rerender();
 
     const onSuccess = jest.fn();
@@ -33,23 +33,23 @@ describe('useGladepayPayment()', () => {
 
     expect(onSuccess).toHaveBeenCalledTimes(0);
     expect(onClose).toHaveBeenCalledTimes(0);
-    expect(callGladepaySDK).toHaveBeenCalledTimes(1);
+    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
   });
 
   it('should pass if initializePayment does not accept any args', () => {
-    const {result, rerender} = renderHook(() => useGladepayPayment(config));
+    const {result, rerender} = renderHook(() => useMonnifyPayment(config));
     rerender();
 
     act(() => {
       result.current();
     });
 
-    expect(callGladepaySDK).toHaveBeenCalledTimes(1);
+    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
   });
 
-  it('should useGladepayPayment accept all parameters', () => {
+  it('should useMonnifyPayment accept all parameters', () => {
     const {result, rerender} = renderHook(() =>
-      useGladepayPayment({
+      useMonnifyPayment({
         ...config,
         metadata: JSON.stringify({
           custom_field: [
@@ -69,11 +69,11 @@ describe('useGladepayPayment()', () => {
       result.current();
     });
 
-    expect(callGladepaySDK).toHaveBeenCalledTimes(1);
+    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
   });
 
   it('should be accept trigger from other component', () => {
-    const {result, rerender} = renderHook(() => useGladepayPayment(config));
+    const {result, rerender} = renderHook(() => useMonnifyPayment(config));
     rerender();
     const Btn = (): any => (
       <div>
@@ -85,7 +85,7 @@ describe('useGladepayPayment()', () => {
     // Click button
     fireEvent.click(getByText('Donation'));
     // @ts-ignore
-    expect(callGladepaySDK).toHaveBeenCalledTimes(1);
+    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
   });
 
   it('should accept being rendered in a container', () => {
@@ -93,7 +93,7 @@ describe('useGladepayPayment()', () => {
       return <div>{children}</div>;
     };
 
-    const {result, rerender} = renderHook(() => useGladepayPayment(config), {wrapper});
+    const {result, rerender} = renderHook(() => useMonnifyPayment(config), {wrapper});
 
     rerender();
     act(() => {
@@ -101,6 +101,6 @@ describe('useGladepayPayment()', () => {
     });
 
     // @ts-ignore
-    expect(callGladepaySDK).toHaveBeenCalledTimes(1);
+    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,3 +1,3 @@
-export {default as useGladepayPayment} from './use-gladepay';
-export {default as GladepayButton} from './gladepay-button';
-export {default as GladepayConsumer} from './gladepay-consumer';
+export {default as useMonnifyPayment} from './use-monnify';
+export {default as MonnifyButton} from './monnify-button';
+export {default as MonnifyConsumer} from './monnify-consumer';
