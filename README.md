@@ -58,7 +58,10 @@ yarn add react-monnify
 
       render() {
         return (
-          <div>
+        <div>
+          <MonnifyHookExample className="btn" />
+        </div>
+        <div>
             <p>
               <MonnifyButton
                 text="Make Payment"
@@ -77,7 +80,14 @@ yarn add react-monnify
                 tag="button"{/*it can be button or a or input tag */}
               />
             </p>
-          </div>
+        </div>
+        <div>
+        <MonnifyConsumer {...componentProps} className="btn">
+          {({initializePayment}) => (
+            <button onClick={() => initializePayment()}>Monnify Consumer Implementation</button>
+          )}
+        </MonnifyConsumer>
+      </div>
         );
       }
     }

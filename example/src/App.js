@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import {useMonnifyPayment, MonnifyButton, MonnifyConsumer} from './dist/index.es';
+import {useMonnifyPayment, MonnifyButton, MonnifyConsumer} from 'react-monnify';
 import './App.css';
 
 const config = {
