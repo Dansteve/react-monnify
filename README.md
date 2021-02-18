@@ -27,7 +27,7 @@ yarn add react-monnify
 ```javascript
     import React, { Component } from 'react';
     //import the library
-    import MonnifyButton from 'react-monnify';
+    import { useMonnifyPayment, MonnifyButton, MonnifyConsumer, MonnifyHookExample } from 'react-monnify';
 
     class App extends Component {
 
