@@ -58,7 +58,7 @@ function useMonnifyScript(isTestMode) {
 var callMonnifySDK = function (monnifyArgs) {
     console.log('callMonnifySDK', monnifyArgs);
     //@ts-ignore
-    var handler = window.MonnifySDK && window.MonnifySDK.initialize(monnifyArgs);
+    window.MonnifySDK && window.MonnifySDK.initialize(monnifyArgs);
     console.log('handler', window);
     // handler && handler.loadIframe(monnifyArgs);
 };

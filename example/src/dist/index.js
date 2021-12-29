@@ -2,10 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 var React = require('react');
-var React__default = _interopDefault(React);
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
 var cachedScripts = [];
 function useMonnifyScript(isTestMode) {
@@ -65,7 +66,7 @@ function useMonnifyScript(isTestMode) {
 var callMonnifySDK = function (monnifyArgs) {
     console.log('callMonnifySDK', monnifyArgs);
     //@ts-ignore
-    var handler = window.MonnifySDK && window.MonnifySDK.initialize(monnifyArgs);
+    window.MonnifySDK && window.MonnifySDK.initialize(monnifyArgs);
     console.log('handler', window);
     // handler && handler.loadIframe(monnifyArgs);
 };
@@ -157,7 +158,7 @@ function __rest(s, e) {
 var MonnifyButton = function (_a) {
     var text = _a.text, className = _a.className, children = _a.children, onSuccess = _a.onSuccess, onClose = _a.onClose, others = __rest(_a, ["text", "className", "children", "onSuccess", "onClose"]);
     var initializePayment = useMonnifyPayment(others);
-    return (React__default.createElement("button", { className: className, onClick: function () { return initializePayment(onSuccess, onClose); } }, text || children));
+    return (React__default['default'].createElement("button", { className: className, onClick: function () { return initializePayment(onSuccess, onClose); } }, text || children));
 };
 
 var MonnifyContext = React.createContext({
@@ -169,7 +170,7 @@ var MonnifyContext = React.createContext({
 var MonnifyProvider = function (_a) {
     var children = _a.children, onSuccess = _a.onSuccess, onClose = _a.onClose, others = __rest(_a, ["children", "onSuccess", "onClose"]);
     var initializePayment = useMonnifyPayment(others);
-    return (React__default.createElement(MonnifyContext.Provider, { value: { initializePayment: initializePayment, onSuccess: onSuccess, onClose: onClose } }, children));
+    return (React__default['default'].createElement(MonnifyContext.Provider, { value: { initializePayment: initializePayment, onSuccess: onSuccess, onClose: onClose } }, children));
 };
 
 var MonnifyConsumerChild = function (_a) {
@@ -182,8 +183,8 @@ var MonnifyConsumer = React.forwardRef(function (_a, ref) {
     var children = _a.children, paraSuccess = _a.onSuccess, paraClose = _a.onClose, others = __rest(_a, ["children", "onSuccess", "onClose"]);
     var onSuccess = paraSuccess ? paraSuccess : function () { return null; };
     var onClose = paraClose ? paraClose : function () { return null; };
-    return (React__default.createElement(MonnifyProvider, __assign({}, others, { onSuccess: onSuccess, onClose: onClose }),
-        React__default.createElement(MonnifyConsumerChild, { ref: ref }, children)));
+    return (React__default['default'].createElement(MonnifyProvider, __assign({}, others, { onSuccess: onSuccess, onClose: onClose }),
+        React__default['default'].createElement(MonnifyConsumerChild, { ref: ref }, children)));
 });
 
 exports.MonnifyButton = MonnifyButton;
