@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { MonnifyProps } from './types';
+import {useEffect} from 'react';
+import {MonnifyProps} from './types';
 import useMonnifyScript from './monnify-script';
-import { callMonnifySDK } from './monnify-actions';
+import {callMonnifySDK} from './monnify-actions';
 
 export default function useMonnifyPayment(
   options: MonnifyProps,
@@ -23,7 +23,7 @@ export default function useMonnifyPayment(
     incomeSplitConfig,
   } = options;
 
-  function clean(obj: any) {
+  const clean = (obj: any): any => {
     // tslint:disable-next-line:prefer-const
     for (const propName in obj) {
       if (obj[propName] === null || obj[propName] === undefined) {
@@ -31,7 +31,7 @@ export default function useMonnifyPayment(
       }
     }
     return obj;
-  }
+  };
 
   function initializePayment(onComplete?: Function, onClose?: Function): void {
     if (scriptError) {

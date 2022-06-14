@@ -1,7 +1,7 @@
 export interface MonnifyProps {
   /**
    * development status | Should be set to true when using the sandbox and false when on production
-  */
+   */
   isTestMode?: true | false;
   /**
    * Merchant's API Key (Can be found on the Monnify dashboard)
@@ -41,7 +41,7 @@ export interface MonnifyProps {
    */
   paymentDescription?: string;
   /**
-   * Transaction Hash added to transaction response for security purposes. 
+   * Transaction Hash added to transaction response for security purposes.
    *  Click here {@link https://docs.teamapt.com/display/MON/Calculating+the+Transaction+Hash Monnify}.
    *  for information on how to calculate the hash value
    */
