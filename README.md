@@ -1,4 +1,4 @@
-# react-monnify
+# react-monnify 0.0.6
 
 This is a react library for implementing monnify payment gateway
 
@@ -31,7 +31,7 @@ yarn add react-monnify
 
     class App extends Component {
 
-    	state = {
+     state = {
           amount: 5000,
           currency: 'NGN',
           reference: '' + Math.floor(Math.random() * 1000000000 + 1),
@@ -46,15 +46,15 @@ yarn add react-monnify
             name: 'Damilare',
             age: 45,
           },
-    	}
+     }
 
-    	onComplete = (response) => {
-    		console.log(response); // card charged successfully, get reference here
-    	}
+     onComplete = (response) => {
+      console.log(response); // card charged successfully, get reference here
+     }
 
-    	close = (response) => {
-    		console.log(response);
-    	}
+     close = (response) => {
+      console.log(response);
+     }
 
       render() {
         return (

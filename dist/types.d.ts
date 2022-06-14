@@ -1,7 +1,7 @@
 export interface MonnifyProps {
     /**
      * development status | Should be set to true when using the sandbox and false when on production
-    */
+     */
     isTestMode?: true | false;
     /**
      * Merchant's API Key (Can be found on the Monnify dashboard)

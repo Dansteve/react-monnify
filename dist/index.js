@@ -64,17 +64,14 @@ function useMonnifyScript(isTestMode) {
 }
 
 var callMonnifySDK = function (monnifyArgs) {
-    console.log('callMonnifySDK', monnifyArgs);
     //@ts-ignore
     window.MonnifySDK && window.MonnifySDK.initialize(monnifyArgs);
-    console.log('handler', window);
-    // handler && handler.loadIframe(monnifyArgs);
 };
 
 function useMonnifyPayment(options) {
     var _a = useMonnifyScript(options.isTestMode), scriptLoaded = _a[0], scriptError = _a[1];
     var isTestMode = options.isTestMode, apiKey = options.apiKey, contractCode = options.contractCode, amount = options.amount, reference = options.reference, currency = options.currency, customerFullName = options.customerFullName, customerEmail = options.customerEmail, customerMobileNumber = options.customerMobileNumber, paymentDescription = options.paymentDescription, redirectUrl = options.redirectUrl, metadata = options.metadata, incomeSplitConfig = options.incomeSplitConfig;
-    function clean(obj) {
+    var clean = function (obj) {
         // tslint:disable-next-line:prefer-const
         for (var propName in obj) {
             if (obj[propName] === null || obj[propName] === undefined) {
@@ -82,7 +79,7 @@ function useMonnifyPayment(options) {
             }
         }
         return obj;
-    }
+    };
     function initializePayment(onComplete, onClose) {
         if (scriptError) {
             throw new Error('Unable to load monnify inline script');
