@@ -4,7 +4,7 @@ This is a react library for implementing monnify payment gateway
 
 ## Demo
 
-![Demo](App.png?raw=true 'Demo Image')
+![Demo](App.png?raw=true "Demo Image")
 
 ## Get Started
 
@@ -66,8 +66,8 @@ yarn add react-monnify
               <MonnifyButton
                 text="Make Payment"
                 className="payButton"
-                onComplete={this.onComplete}
-                close={this.close}
+                onSuccess={this.onComplete}
+                onClose={this.close}
                 disabled={true} {/*disable payment button*/}
                 embed={true} {/*payment embed in your app instead of a pop up*/}
                 customerFullName={this.state.customerFullName}
