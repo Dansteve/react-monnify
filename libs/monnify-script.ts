@@ -11,7 +11,7 @@ export default function useMonnifyScript(isTestMode = false): boolean[] {
   if (isTestMode) {
     src = 'https://sandbox.sdk.monnify.com/plugin/monnify.js';
   } else {
-    src = 'https://sandbox.sdk.monnify.com/plugin/monnify.js';
+    src = 'https://sdk.monnify.com/plugin/monnify.js';
   }
 
   const [state, setState] = useState<IScriptResult>({
