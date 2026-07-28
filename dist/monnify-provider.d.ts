@@ -1,9 +1,9 @@
-/// <reference types="react" />
+import { ReactElement, ReactNode } from 'react';
 import { MonnifyProps } from './types';
 interface MonnifyProviderProps extends MonnifyProps {
-    children: JSX.Element;
+    children: ReactNode;
     onSuccess: Function;
     onClose: Function;
 }
-declare const MonnifyProvider: ({ children, onSuccess, onClose, ...others }: MonnifyProviderProps) => JSX.Element;
+declare const MonnifyProvider: ({ children, onSuccess, onClose, ...others }: MonnifyProviderProps) => ReactElement;
 export default MonnifyProvider;

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {ReactElement, ReactNode} from 'react';
 import MonnifyContext from './monnify-context';
 import useMonnifyPayment from './use-monnify';
 import {MonnifyProps} from './types';
 
 interface MonnifyProviderProps extends MonnifyProps {
-  children: JSX.Element;
+  children: ReactNode;
   onSuccess: Function;
   onClose: Function;
 }
@@ -14,7 +14,7 @@ const MonnifyProvider = ({
   onSuccess,
   onClose,
   ...others
-}: MonnifyProviderProps): JSX.Element => {
+}: MonnifyProviderProps): ReactElement => {
   const initializePayment = useMonnifyPayment(others);
   return (
     <MonnifyContext.Provider value={{initializePayment, onSuccess, onClose}}>

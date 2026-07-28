@@ -1,106 +1,115 @@
-// @ts-ignore
-import {renderHook, cleanup, act} from '@testing-library/react-hooks';
-import {render, fireEvent} from '@testing-library/react';
 import React from 'react';
+import {renderHook, render, fireEvent, act, waitFor} from '@testing-library/react';
 import useMonnifyPayment from '../use-monnify';
-import {callMonnifySDK} from '../monnify-actions';
-import useMonnifyScript from '../monnify-script';
-import {config} from './fixtures';
+import {__resetMonnifyScriptCache} from '../monnify-script';
+import {config, fireScriptLoad, fireScriptError, installFakeSDK} from './fixtures';
 
-jest.mock('../monnify-actions');
+let initialize: jest.Mock;
+
+beforeEach(() => {
+  __resetMonnifyScriptCache();
+  document.body.innerHTML = '';
+  document.head.innerHTML = '';
+  initialize = installFakeSDK();
+});
+
+/** Renders the hook and drives the script through a successful load. */
+const renderReady = async (options = config) => {
+  const view = renderHook(() => useMonnifyPayment(options));
+  await act(async () => {
+    fireScriptLoad();
+  });
+  await waitFor(() => expect(document.querySelector('script')).toBeTruthy());
+  return view;
+};
 
 describe('useMonnifyPayment()', () => {
-  beforeEach(() => {
-    // @ts-ignore
-    callMonnifySDK = jest.fn();
-    renderHook(() => useMonnifyScript());
+  it('calls the SDK once the script has loaded', async () => {
+    const {result} = await renderReady();
+
+    act(() => {
+      result.current();
+    });
+
+    expect(initialize).toHaveBeenCalledTimes(1);
   });
 
-  afterAll(() => {
-    cleanup();
-    document.body.innerHTML = '';
-  });
-
-  it('should use useMonnifyPayment', () => {
-    const {result, rerender} = renderHook(() => useMonnifyPayment(config));
-    rerender();
-
-    const onSuccess = jest.fn();
+  it('forwards onComplete and onClose to the SDK', async () => {
+    const {result} = await renderReady();
+    const onComplete = jest.fn();
     const onClose = jest.fn();
+
     act(() => {
-      result.current(onSuccess, onClose);
+      result.current(onComplete, onClose);
     });
 
-    expect(onSuccess).toHaveBeenCalledTimes(0);
-    expect(onClose).toHaveBeenCalledTimes(0);
-    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
+    const args = initialize.mock.calls[0][0];
+    expect(args.onComplete).toBe(onComplete);
+    expect(args.onClose).toBe(onClose);
   });
 
-  it('should pass if initializePayment does not accept any args', () => {
-    const {result, rerender} = renderHook(() => useMonnifyPayment(config));
-    rerender();
+  it('passes the merchant configuration through', async () => {
+    const {result} = await renderReady();
+
+    act(() => {
+      result.current();
+    });
+
+    expect(initialize.mock.calls[0][0]).toMatchObject({
+      apiKey: config.apiKey,
+      contractCode: config.contractCode,
+      amount: config.amount,
+      reference: config.reference,
+      currency: 'NGN',
+      customerEmail: config.customerEmail,
+    });
+  });
+
+  it('strips null and undefined values before calling the SDK', async () => {
+    const {result} = await renderReady();
 
     act(() => {
       result.current();
     });
 
-    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
+    const args = initialize.mock.calls[0][0];
+    // incomeSplitConfig defaults to null internally and must not be forwarded.
+    expect(args).not.toHaveProperty('incomeSplitConfig');
+    Object.values(args).forEach((value) => expect(value).not.toBeNull());
   });
 
-  it('should useMonnifyPayment accept all parameters', () => {
-    const {result, rerender} = renderHook(() =>
-      useMonnifyPayment({
-        ...config,
-        metadata: JSON.stringify({
-          custom_field: [
-            {
-              display_name: 'Mobile Number',
-              variable_name: 'mobile_number',
-              value: '+2348143109254',
-            },
-          ],
-        }),
-        currency: 'NGN',
-        payment_method: ['mobile_money', 'ussd'],
-      }),
-    );
-    rerender();
-    act(() => {
-      result.current();
+  // Previously this returned silently, so an early click looked like a no-op
+  // to the user and to the merchant's own logging.
+  it('throws a clear error if called before the script finishes loading', () => {
+    const {result} = renderHook(() => useMonnifyPayment(config));
+
+    expect(() => result.current()).toThrow(/still loading/i);
+    expect(initialize).not.toHaveBeenCalled();
+  });
+
+  it('throws if the script failed to load', async () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const {result} = renderHook(() => useMonnifyPayment(config));
+
+    await act(async () => {
+      fireScriptError();
     });
+    await waitFor(() => expect(consoleError).toHaveBeenCalled());
 
-    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
+    expect(() => result.current()).toThrow(/unable to load/i);
+    expect(initialize).not.toHaveBeenCalled();
+    consoleError.mockRestore();
   });
 
-  it('should be accept trigger from other component', () => {
-    const {result, rerender} = renderHook(() => useMonnifyPayment(config));
-    rerender();
-    const Btn = (): any => (
-      <div>
-        <button onClick={(): any => result.current()}>Donation</button>{' '}
-      </div>
-    );
+  it('can be triggered from another component', async () => {
+    const {result} = await renderReady();
 
-    const {getByText}: Record<string, any> = render(<Btn />);
-    // Click button
+    const Btn = (): React.ReactElement => (
+      <button onClick={(): void => result.current()}>Donation</button>
+    );
+    const {getByText} = render(<Btn />);
     fireEvent.click(getByText('Donation'));
-    // @ts-ignore
-    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
-  });
 
-  it('should accept being rendered in a container', () => {
-    const wrapper: React.FC = ({children}: Record<string, any>) => {
-      return <div>{children}</div>;
-    };
-
-    const {result, rerender} = renderHook(() => useMonnifyPayment(config), {wrapper});
-
-    rerender();
-    act(() => {
-      result.current();
-    });
-
-    // @ts-ignore
-    expect(callMonnifySDK).toHaveBeenCalledTimes(1);
+    expect(initialize).toHaveBeenCalledTimes(1);
   });
 });

@@ -42,10 +42,10 @@ export interface MonnifyProps {
   paymentDescription?: string;
   /**
    * Transaction Hash added to transaction response for security purposes.
-   *  Click here {@link https://docs.teamapt.com/display/MON/Calculating+the+Transaction+Hash Monnify}.
-   *  for information on how to calculate the hash value
+   *  See {@link https://developers.monnify.com/ the Monnify developer docs}
+   *  for information on how to calculate the hash value.
    */
-  transactionHash?: {};
+  transactionHash?: Record<string, unknown>;
   /**
    * Status of the transaction ("PAID", "PENDING" or "FAILED")
    */
@@ -87,4 +87,17 @@ export interface MonnifySplitOptions {
    * The percentage of the amount paid to be split into the sub account.
    */
   splitAmount?: number;
+}
+
+/**
+ * The shape the Monnify inline script attaches to `window`.
+ */
+export interface MonnifySDK {
+  initialize(options: Record<string, any>): void;
+}
+
+declare global {
+  interface Window {
+    MonnifySDK?: MonnifySDK;
+  }
 }

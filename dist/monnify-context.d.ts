@@ -1,5 +1,4 @@
-/// <reference types="react" />
-declare type IMonnifyContext = {
+type IMonnifyContext = {
     initializePayment: Function;
     onSuccess: Function;
     onClose: Function;
