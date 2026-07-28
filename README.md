@@ -5,10 +5,10 @@ React hooks and components for accepting payments with the [Monnify](https://mon
 [![npm](https://img.shields.io/npm/v/react-monnify.svg)](https://www.npmjs.com/package/react-monnify)
 [![license](https://img.shields.io/npm/l/react-monnify.svg)](LICENSE.md)
 
-![Monnify checkout: bank transfer, card and success states](App.png?raw=true 'Monnify checkout via react-monnify')
+![Monnify checkout: bank transfer, card and success states](https://raw.githubusercontent.com/Dansteve/react-monnify/master/App.png 'Monnify checkout via react-monnify')
 
 <p align="center">
-  <img src="docs/demo-app.png?raw=true" alt="The bundled example app" width="380">
+  <img src="https://raw.githubusercontent.com/Dansteve/react-monnify/master/docs/demo-app.png" alt="The bundled example app" width="380">
 </p>
 
 ---
