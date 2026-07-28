@@ -1,0 +1,57 @@
+name: Publish to npm
+
+# Fires when you publish a GitHub Release. Draft a release from a tag and this
+# builds, tests, and pushes the package to npmjs.com.
+on:
+  release:
+    types: [published]
+  # Manual escape hatch: re-run a publish without cutting another release.
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Required for npm Trusted Publishing (OIDC) and for build provenance.
+      # Without this the publish step cannot mint an identity token.
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # Trusted Publishing requires npm >= 11.5.1. Ubuntu images ship older.
+      - name: Use an npm that supports trusted publishing
+        run: npm install -g npm@latest
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - run: npm test
+
+      - run: npm run build
+
+      # Fails loudly if package.json version does not match the release tag,
+      # rather than silently publishing the wrong version.
+      - name: Check version matches the tag
+        if: github.event_name == 'release'
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG=$(node -p "require('./package.json').version")
+          echo "tag=$TAG package.json=$PKG"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::Tag $TAG does not match package.json version $PKG"
+            exit 1
+          fi
+
+      # No NODE_AUTH_TOKEN. Trusted Publishing exchanges the OIDC token for
+      # short-lived credentials, so there is no secret to leak or rotate, and it
+      # is not blocked by the 2FA on the account.
+      - name: Publish
+        run: npm publish --access public
